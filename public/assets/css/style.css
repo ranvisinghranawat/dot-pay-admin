@@ -1296,3 +1296,38 @@ main#main {
   opacity: 0.65;
   filter: alpha(opacity=65);
 }
+
+.error{
+  color: #b91e1e;
+}
+.table{
+  vertical-align: middle;
+}
+.btn-group button {
+  background-color: #0e2170;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 14px;
+  cursor: pointer;
+  width: 50%;
+  display: block;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.btn-group, .btn-group-vertical {
+  position: relative;
+  /* display: inline-flex; */
+  /* vertical-align: middle; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-group button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #ff8925;
+}

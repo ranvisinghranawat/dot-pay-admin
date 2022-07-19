@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../Firebase/config";
 import Modal from "react-modal";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Swal from "sweetalert2";
 import ToggleButton from "react-toggle-button";
 import { toast } from "react-toastify";
@@ -34,6 +31,7 @@ const customStyles = {
 const VerifyArtist = (props) => {
   const [docData, setdocData] = useState({});
   const [toggle, setToggle] = useState(docData.isProfileVerified);
+  const [id,setId] = useState("");
   // const [verifyMerchant, setVerifyMerchant] = useState([]);
   const [placeOfferModel, setPlaceOfferModel] = useState(false);
   const [name, setName] = useState("");
@@ -44,18 +42,11 @@ const VerifyArtist = (props) => {
   const [phoneError, setPhoneError] = useState("");
   // const [artistPageNumber, setArtistPageNumber] = useState(1);
   const [totalMerchant, setToatlMerchant] = useState("");
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+ 
 
   // let pageSize = 2;
   // let offset = "";
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleTogle = async ()=> {
     setToggle(docData.isProfileVerified)
     toast.success("Verify Merchants Successfully", {
@@ -79,7 +70,7 @@ const VerifyArtist = (props) => {
     getData();
   }, []);
 
-  console.log(docData, "docData");
+  // console.log(docData, "docData");
 
   // edit details of merchant validations
 
@@ -150,25 +141,6 @@ const VerifyArtist = (props) => {
       // }
     });
   };
-  const DeleteUser = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      // if (result.isConfirmed) {
-      //   Swal.fire(
-      //     'Deleted!',
-      //     'Your file has been deleted.',
-      //     'success'
-      //   )
-      // }
-    });
-  };
 
   return (
     <div>
@@ -188,7 +160,7 @@ const VerifyArtist = (props) => {
                 type="text"
                 className="form-control"
                 placeholder="Username"
-                value={docData.username}
+                value={username}
                 onChange={handleUserNameChange}
               />
               {userNameError && <span className="error">{userNameError}</span>}
@@ -200,6 +172,7 @@ const VerifyArtist = (props) => {
                 type="text"
                 className="form-control"
                 placeholder="Name"
+                value={name}
                 onChange={handleNameChange}
               />
               {nameError && <span className="error">{nameError}</span>}
@@ -211,11 +184,17 @@ const VerifyArtist = (props) => {
                 type="number"
                 className="form-control"
                 placeholder="Phone"
+                value={phone}
                 onChange={handlePhoneChange}
               />
               {phoneError && <span className="error">{phoneError}</span>}
               <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
+            <input type="text"
+                      className="form-control"
+                      value={id}
+                      readOnly
+                    />
 
             <div className="flex">
               <div
@@ -250,7 +229,7 @@ const VerifyArtist = (props) => {
             <th scope="col">Verify</th>
             <th scope="col">KYC </th>
             <th scope="col">Image</th>
-            <th scope="col">Menu</th>
+            <th scope="col">Status Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -260,7 +239,7 @@ const VerifyArtist = (props) => {
                 return (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
-                    <td><b>{item.uid}</b></td>
+                    <td><b>{item.uid.slice(0,10)}</b></td>
                     <td>{item.username}</td>
                     <td>{item.email}</td>
                     <td>{item.phone}</td>
@@ -273,49 +252,15 @@ const VerifyArtist = (props) => {
                     </td>
                     <td>
                       {" "}
-                      <Button
-                        id="demo-positioned-button"
-                        aria-controls={
-                          open ? "demo-positioned-menu" : undefined
-                        }
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
-                      >
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </Button>
-                      <Menu
-                        id="demo-positioned-menu"
-                        aria-labelledby="demo-positioned-button"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: "top",
-                          horizontal: "left",
-                        }}
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "left",
-                        }}
-                      >
-                        <MenuItem
-                          onClick={() => {
-                            setPlaceOfferModel(true);
-                          }}
-                        >
-                          Edit
-                        </MenuItem>
-                        <MenuItem onClick={handleBlock}>Block</MenuItem>
-                        <MenuItem
-                          onClick={(e) => {
-                            e.preventDefault();
-                            DeleteUser();
-                          }}
-                        >
-                          Delete
-                        </MenuItem>
-                      </Menu>
+                      <div className="btn-group">
+                      <button  onClick={() => {setPlaceOfferModel(true);
+                       setId(item.uid); 
+                      setUserName(item.username); 
+                      setName(item.name);
+                      setPhone(item.phone);
+                      }}>Edit</button>
+                      <button onClick={handleBlock}>Block</button>
+                    </div>
                     </td>
                   </tr>
                 );
