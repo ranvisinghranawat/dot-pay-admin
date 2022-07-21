@@ -4,12 +4,12 @@ import Sidebar from './common/Sidebar';
 import Footer from './common/Footer';
 
 const DashboardLayout = (props) => {
-    useEffect(function(){
-        const list = document.querySelector('body').classList;
-        if(list.contains("login-page")){
-            list.remove("login-page");
-        }
-     },[]);
+    // useEffect(function(){
+    //     const list = document.querySelector('body').classList;
+    //     if(list.contains("login-page")){
+    //         list.remove("login-page");
+    //     }
+    //  },[]);
 
     return (
       <React.Fragment>
